@@ -1,0 +1,12 @@
+@font-face {
+    font-family: Nunito;
+    src: url('../fonts/Nunito-Light.ttf');
+}
+
+*{
+    font-family: Nurito;
+}
+
+body{
+    margin: 0;
+}
