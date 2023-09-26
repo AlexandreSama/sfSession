@@ -29,7 +29,8 @@ class Session
     #[ORM\Column]
     private ?int $nbPlace = null;
 
-    #[ORM\ManyToMany(targetEntity: Stagiaire::class, inversedBy: 'sessions')]
+    #[ORM\ManyToMany(targetEntity: Stagiaire::class, mappedBy: 'sessions')]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $inscrit;
 
     #[ORM\ManyToOne(inversedBy: 'posseder')]
@@ -37,6 +38,7 @@ class Session
     private ?Formation $formation = null;
 
     #[ORM\OneToMany(mappedBy: 'session', targetEntity: Programme::class)]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $programmes;
 
     public function __construct()
@@ -67,6 +69,11 @@ class Session
         return $this->dateDebut;
     }
 
+    public function getDateDebutFr(): ?string
+    {
+        return $this->dateDebut->format('d-m-y');
+    }
+
     public function setDateDebut(\DateTimeInterface $dateDebut): static
     {
         $this->dateDebut = $dateDebut;
@@ -77,6 +84,11 @@ class Session
     public function getDateFin(): ?\DateTimeInterface
     {
         return $this->dateFin;
+    }
+
+    public function getDateFinFr(): ?string
+    {
+        return $this->dateFin->format('d-m-y');
     }
 
     public function setDateFin(\DateTimeInterface $dateFin): static

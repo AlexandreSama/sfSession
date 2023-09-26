@@ -37,7 +37,7 @@ class Stagiaire
     #[ORM\Column(length: 10)]
     private ?string $telephone = null;
 
-    #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'inscrit')]
+    #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'inscrit')]
     private Collection $sessions;
 
     public function __construct()

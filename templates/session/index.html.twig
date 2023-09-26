@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %} {% block title %}Liste des sessions{% endblock %}
+{% block body %}
+<div class="mainListFormation">
+  <div class="holderListFormation">
+    <div class="listFormation">
+      <h1>Liste des sessions</h1>
+      <table class="tableListFormation">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>Nom</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Nombres d'inscrits</th>
+            <th>Formation</th>
+            <th>Nombre de programme</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for session in sessions %}
+          <tr>
+            <td>{{ session.nom }}</td>
+            <td>{{ session.dateDebutFr }}</td>
+            <td>{{ session.dateFinFr }}</td>
+            <td>{{ session.dateFinFr }}</td>
+            {% if session.inscrit %}
+            <td>{{ session.inscrit|length }}</td>
+            {% else %}
+            <td>Aucun inscrit</td>
+            {% endif %} 
+            <td>{{session.formation.nomFormation}}</td>
+            {% if session.programmes %}
+            <td>{{session.programmes|length }}</td>
+            {% else %}
+            <td>Aucun programme</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

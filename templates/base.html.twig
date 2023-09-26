@@ -1,3 +1,4 @@
+{% set currentRoute = app.current_route %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,7 +19,13 @@
     </head>
     <body>
         <header>
+            {% if app.user %}
+            {% if currentRoute == 'app_formateur'%}
+            {{include('shared/navbar_formateur.html.twig')}}
+            {% else %}
             {{include('shared/navbar.html.twig')}}
+            {% endif %}
+            {% endif %}
         </header>
         {% block body %}
         {% endblock %}

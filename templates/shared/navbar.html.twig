@@ -7,13 +7,11 @@
       </div>
       <div class="linksHolder">
         <a href="{{path('app_home')}}">Accueil</a>
-        <a href="#">Sessions</a>
-        <a href="#">Créer une session</a>
+        <a href="{{path('app_session')}}">Sessions</a>
         <a href="{{path('app_formation')}}">Formations</a>
-        <a href="{{path('new_formation')}}">Créer une formation</a>
       </div>
       <div class="userStuff">
-        <a href="#">Mon profile</a>
+        <a href="{{path('app_formateur', {'id': app.user.id})}}">Mon profile</a>
         <a href="{{path('app_logout')}}">Se déconnecter</a>
       </div>
     </div>
