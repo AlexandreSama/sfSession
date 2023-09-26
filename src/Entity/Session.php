@@ -19,8 +19,6 @@ class Session
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $adresse = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDebut = null;
@@ -60,18 +58,6 @@ class Session
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(string $adresse): static
-    {
-        $this->adresse = $adresse;
 
         return $this;
     }
