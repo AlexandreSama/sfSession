@@ -9,6 +9,7 @@
           <tr>
             <th>id</th>
             <th>Nom</th>
+            <th>Nombre de sessions</th>
           </tr>
         </thead>
         <tbody>
@@ -16,6 +17,11 @@
           <tr>
             <td>{{ formation.id }}</td>
             <td>{{ formation.nomFormation }}</td>
+            {% if formation.posseder %}
+            <td>{{ formation.posseder|length }}</td>
+            {% else %}
+            <td>Aucune session prévu</td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
