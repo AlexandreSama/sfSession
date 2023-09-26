@@ -1,0 +1,39 @@
+{% if app.user %}
+<nav class="navbar">
+    <div class="holder">
+      <div class="iconHolder">
+        <img src="{{asset('img/icon.png')}}" alt="" class="icon" />
+        <h4>Kashir</h4>
+      </div>
+      <div class="linksHolder">
+        <a href="{{path('app_home')}}">Accueil</a>
+        <a href="#">Sessions</a>
+        <a href="#">Créer une session</a>
+        <a href="{{path('app_formation')}}">Formations</a>
+        <a href="{{path('new_formation')}}">Créer une formation</a>
+      </div>
+      <div class="userStuff">
+        <a href="#">Mon profile</a>
+        <a href="{{path('app_logout')}}">Se déconnecter</a>
+      </div>
+    </div>
+  </nav>
+{% else %}
+<nav class="navbar">
+    <div class="holder">
+      <div class="iconHolder">
+        <img src="{{asset('img/icon.png')}}" alt="" class="icon" />
+        <h4>Kashir</h4>
+      </div>
+      <div class="linksHolder">
+        <a href="{{path('app_home')}}">Accueil</a>
+        <a href="{{path('new_formation')}}">Créer une formation</a>
+        <a href="#">Sessions</a>
+      </div>
+      <div class="userStuff">
+        <a href="{{path('app_login')}}">Se connecter</a>
+        <a href="{{path('app_register')}}">S'inscrire</a>
+      </div>
+    </div>
+  </nav>
+{% endif %}
