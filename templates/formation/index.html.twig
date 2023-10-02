@@ -1,24 +1,28 @@
 {% extends 'base.html.twig' %} {% block title %}Liste des formations{% endblock
 %} {% block body %}
-<div class="mainListFormation">
-  <div class="holderListFormation">
-    <div class="listFormation">
-      <h1>Liste des formations</h1>
-      <table class="tableListFormation">
+<div class="mainList">
+  <section>
+    <h1>Liste des formations</h1>
+    <div class="tbl-header">
+      <table cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
-            <th>id</th>
-            <th>Nom</th>
-            <th>Nombre de sessions</th>
+            <th>Id</th>
+            <th>Nom du programme</th>
+            <th>Nombres de sessions</th>
           </tr>
         </thead>
+      </table>
+    </div>
+    <div class="tbl-content">
+      <table cellpadding="0" cellspacing="0" border="0">
         <tbody>
           {% for formation in formations %}
           <tr>
-            <td>{{ formation.id }}</td>
-            <td>{{ formation.nomFormation }}</td>
+            <td>{{formation.id}}</td>
+            <td>{{formation.nomFormation}} </td>
             {% if formation.posseder %}
-            <td>{{ formation.posseder|length }}</td>
+            <td>{{formation.posseder|length}} sessions prévus</td>
             {% else %}
             <td>Aucune session prévu</td>
             {% endif %}
@@ -27,6 +31,6 @@
         </tbody>
       </table>
     </div>
-  </div>
+  </section>
 </div>
 {% endblock %}

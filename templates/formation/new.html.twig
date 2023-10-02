@@ -1,18 +1,7 @@
 {% extends 'base.html.twig' %}
-{% block title %} Créer une formation {% endblock %} 
+{% block title %} Créer une formation {% endblock %}
 {% block body %}
-<div class="mainNewFormation">
-  <div class="holderMainNewFormation">
-    <div class="titleHolderNewFormation">
-      {% if edit %}
-      <h1>Modifier une formation</h1>
-      {% else %}
-      <h1>Créer une formation</h1>
-      {% endif %}
-    </div>
-    <div class="form">
-        {{form(formCreate)}}
-    </div>
-  </div>
+<div class="mainNew">
+  
 </div>
 {% endblock %}

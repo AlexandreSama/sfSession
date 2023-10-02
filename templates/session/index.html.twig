@@ -1,44 +1,50 @@
 {% extends 'base.html.twig' %} {% block title %}Liste des sessions{% endblock %}
 {% block body %}
-<div class="mainListFormation">
-  <div class="holderListFormation">
-    <div class="listFormation">
-      <h1>Liste des sessions</h1>
-      <table class="tableListFormation">
+<div class="mainList">
+  <section>
+    <h1>Liste des sessions</h1>
+    <div class="tbl-header">
+      <table cellpadding="0" cellspacing="0" border="0">
         <thead>
           <tr>
-            <th>id</th>
-            <th>Nom</th>
+            <th>Id</th>
+            <th>Nom de la session</th>
             <th>Date de début</th>
             <th>Date de fin</th>
-            <th>Nombres d'inscrits</th>
-            <th>Formation</th>
-            <th>Nombre de programme</th>
+            <th>Nombre de place</th>
+            <th>nombre de place restante</th>
+            <th>Rattaché a la formation</th>
+            <th>Programmé</th>
           </tr>
         </thead>
+      </table>
+    </div>
+    <div class="tbl-content">
+      <table cellpadding="0" cellspacing="0" border="0">
         <tbody>
           {% for session in sessions %}
           <tr>
-            <td>{{ session.nom }}</td>
-            <td>{{ session.dateDebutFr }}</td>
-            <td>{{ session.dateFinFr }}</td>
-            <td>{{ session.dateFinFr }}</td>
+            <td>{{session.id}}</td>
+            <td>{{session.nom}}</td>
+            <td>{{session.dateDebutFr}}</td>
+            <td>{{session.dateFinFr}}</td>
+            <td>{{session.nbPlace}}</td>
             {% if session.inscrit %}
-            <td>{{ session.inscrit|length }}</td>
+            <td>{{session.nbPlace - session.inscrit|length}}</td>
             {% else %}
-            <td>Aucun inscrit</td>
-            {% endif %} 
+            <td>{{session.nbPlace}}</td>
+            {% endif %}
             <td>{{session.formation.nomFormation}}</td>
             {% if session.programmes %}
-            <td>{{session.programmes|length }}</td>
+            <td>{{session.programmes|length}}</td>
             {% else %}
-            <td>Aucun programme</td>
+            <td>Aucun programme pour le moment</td>
             {% endif %}
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-  </div>
+  </section>
 </div>
 {% endblock %}

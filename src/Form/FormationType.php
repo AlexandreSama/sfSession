@@ -15,10 +15,8 @@ class FormationType extends AbstractType
     {
         $builder
             ->add('nomFormation', TextType::class, [
-                'required' => true,
-                'label' => 'Quel est le nom de la formation ?'
+                'required' => true
             ])
-            ->add('valider', SubmitType::class)
         ;
     }
 
