@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cour;
+use App\Repository\CourRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,75 +12,87 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CourController extends AbstractController
 {
+
     #[Route('/cour', name: 'app_cour')]
-    public function index(): Response
+    public function index(CourRepository $courRepository): Response
     {
+        $cours = $courRepository->findBy([], ['name' => 'ASC']);
+
         return $this->render('cour/index.html.twig', [
-            'controller_name' => 'CourController',
+            'cours' => $cours,
         ]);
     }
 
     #[Route('/cour/new', name: 'new_cour')]
-    public function new_cour(Cour $cour = null, Request $request, EntityManagerInterface $em): Response
+    public function new(cour $cour = null, Request $Request, EntityManagerInterface $entityManager): Response
     {
-        if(!$cour){
-            $cour = new Cour();
-        }
+        // Create a new cour object
+        $cour = new cour();
 
-        $form = $this->createForm(CategoryType::class, $cour);
+        // Create form by courType to add new cour 
+        $form = $this->createForm(courType::class, $cour);
+        // manage form in relation with de enter request 
+        $form->handleRequest($Request);
 
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        // If form is successful submit and valid 
+        if ($form->isSubmitted() && $form->isValid()) {
 
+            // get form data and put it into $cour
             $cour = $form->getData();
-
-            $em->persist($cour);
-            $em->flush();
-
-            return $this->redirectToRoute('app_home');
+            //prepare 
+            $entityManager->persist($cour);
+            // execute 
+            $entityManager->flush();
+            // redirect to cour list page
+            return $this->redirectToRoute('app_cour');
         }
 
         return $this->render('cour/new.html.twig', [
-            'controller_name' => 'CourController',
-            'formCreate' => $form
+            'formAddcour' => $form
         ]);
     }
 
-    /**
-     * The function "edit_category" is a PHP function that handles the editing of a category entity and
-     * updates it in the database.
-     * 
-     * @param Categorie categorie The "categorie" parameter is an instance of the "Categorie" class. It
-     * is used to retrieve the category object from the database based on the "id" parameter in the
-     * route.
-     * @param Request request The  parameter is an instance of the Request class, which
-     * represents an HTTP request. It contains information about the request such as the request
-     * method, headers, and query parameters.
-     * @param EntityManagerInterface em EntityManagerInterface object used for persisting and flushing
-     * the changes made to the Categorie entity.
-     * 
-     * @return Response a Response object.
-     */
     #[Route('/cour/{id}/edit', name: 'edit_cour')]
-    public function edit_category(Cour $cour, Request $request, EntityManagerInterface $em): Response{
+    public function edit(cour $cour = null, Request $Request, EntityManagerInterface $entityManager): Response
+    {
+        // Create form by courType to add new cour 
+        $form = $this->createForm(courType::class, $cour);
+        // manage form in relation with de enter request 
+        $form->handleRequest($Request);
 
-        $form = $this->createForm(CategoryType::class, $cour);
+        // If form is successful submit and valid 
+        if ($form->isSubmitted() && $form->isValid()) {
 
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-
+            // get form data and put it into $cour
             $cour = $form->getData();
-
-            $em->persist($cour);
-            $em->flush();
-
-            return $this->redirectToRoute('app_home');
+            //prepare 
+            $entityManager->persist($cour);
+            // execute 
+            $entityManager->flush();
+            // redirect to cour list page
+            return $this->redirectToRoute('app_cour');
         }
 
-        return $this->render('cour/new.html.twig', [
-            'controller_name' => 'CourController',
-            'formCreate' => $form,
-            'edit' => $cour->getId()
+        return $this->render('/cour/edit.html.twig', [
+            'formEditcour' => $form
+        ]);
+    }
+
+    #[Route('/cour/{id}/delete', name: 'delete_cour')]
+    public function delete(cour $cour, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($cour);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_cour');
+    }
+
+    #[Route('/cour/{id}', name: 'show_cour')]
+    public function show(cour $cour): Response
+    {
+
+        return $this->render('cour/show.html.twig', [
+            'cour' => $cour
         ]);
     }
 }

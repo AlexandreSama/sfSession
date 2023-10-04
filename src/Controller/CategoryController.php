@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Categorie;
 use App\Form\CategoryType;
+use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
 {
+
+    #[Route('/category', name: 'app_category')]
+    public function index(CategorieRepository $categoryRepository): Response
+    {
+        $categories = $categoryRepository->findBy([], ['name' => 'ASC']);
+
+        return $this->render('category/index.html.twig', [
+            'Categories' => $categories,
+        ]);
+    }
+
     /**
      * This PHP function handles the creation of a new category, including form validation and database
      * persistence.
@@ -27,7 +39,7 @@ class CategoryController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/category/new', name: 'new_category')]
-    public function index(Categorie $categorie = null, Request $request, EntityManagerInterface $em): Response
+    public function new_category(Categorie $categorie = null, Request $request, EntityManagerInterface $em): Response
     {
         if(!$categorie){
             $categorie = new Categorie();

@@ -16,96 +16,78 @@ class FormationController extends AbstractController
     #[Route('/formation', name: 'app_formation')]
     public function index(FormationRepository $formationRepository): Response
     {
+        $formations = $formationRepository->findBy([], ['name' => 'ASC']);
 
-        $formations = $formationRepository->findAll();
         return $this->render('formation/index.html.twig', [
-            'controller_name' => 'FormationController',
-            'formations' => $formations
+            'formations' => $formations,
         ]);
     }
 
-    /**
-     * The function "new_formation" creates a new Formation object, handles the form submission and
-     * validation, persists the formation object to the database, and redirects to the home page.
-     * 
-     * @param Request request The  parameter is an instance of the Request class, which
-     * represents an HTTP request. It contains information about the request, such as the request
-     * method, headers, and query parameters.
-     * @param EntityManagerInterface em The "em" parameter is an instance of the EntityManagerInterface
-     * class, which is responsible for managing the persistence of objects in the database. It provides
-     * methods for persisting, updating, and deleting objects, as well as querying the database. In
-     * this code, it is used to persist the newly created Formation
-     * 
-     * @return Response a Response object.
-     */
     #[Route('/formation/new', name: 'new_formation')]
-    public function new_formation(Request $request, EntityManagerInterface $em): Response
-    {
+    public function new(Formation $formation = null, Request $Request, EntityManagerInterface $entityManager ): Response
+    {   
+        // Create a new formation object
         $formation = new Formation();
 
+        // Create form by formationType to add new formation 
         $form = $this->createForm(FormationType::class, $formation);
+        // manage form in relation with de enter request 
+        $form->handleRequest($Request);
 
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        // If form is successful submit and valid 
+        if ($form->isSubmitted() && $form->isValid()){
 
+            // get form data and put it into $formation
             $formation = $form->getData();
-
-            $em->persist($formation);
-            $em->flush();
-
-            return $this->redirectToRoute('app_home');
+            //prepare 
+            $entityManager->persist($formation);
+            // execute 
+            $entityManager->flush();
+            // redirect to formation list page
+            return $this->redirectToRoute('app_formation');
         }
-
+        
         return $this->render('formation/new.html.twig', [
-            'controller_name' => 'FormationController',
-            'formCreate' => $form,
+            'formAddformation' => $form
         ]);
     }
 
-    /**
-     * This function is responsible for editing a formation object and saving the changes to the
-     * database.
-     * 
-     * @param Formation formation The "formation" parameter is an instance of the Formation class. It
-     * is used to retrieve the existing formation object that needs to be edited.
-     * @param Request request The  parameter is an instance of the Request class, which
-     * represents an HTTP request. It contains information about the request such as the request
-     * method, headers, query parameters, and request body.
-     * @param EntityManagerInterface em The "em" parameter is an instance of the EntityManagerInterface
-     * class, which is responsible for managing the persistence of objects in the database. It provides
-     * methods for persisting, updating, and deleting entities, as well as querying the database. In
-     * this code, it is used to persist the updated formation object
-     * 
-     * @return Response a Response object.
-     */
     #[Route('/formation/{id}/edit', name: 'edit_formation')]
-    public function edit_formation(Formation $formation, Request $request, EntityManagerInterface $em): Response{
-
+    public function edit(Formation $formation, EntityManagerInterface $entityManager, Request $request) : Response
+    {
         $form = $this->createForm(FormationType::class, $formation);
-
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+
+        if ($form->isSubmitted() && $form->isValid()){
 
             $formation = $form->getData();
 
-            $em->persist($formation);
-            $em->flush();
+            $entityManager->persist($formation);
+            $entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_formation');
         }
 
-        return $this->render('formation/new.html.twig', [
-            'controller_name' => 'FormationController',
-            'formCreate' => $form,
-            'edit' => $formation->getId()
+        return $this->render('formation/edit.html.twig', [
+            'formEditformation' => $form
         ]);
+    }
+
+    #[Route('/formation/{id}/delete', name: 'delete_formation')]
+    public function delete(Formation $formation, EntityManagerInterface $entityManager) : Response 
+    {
+        $entityManager->remove($formation);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_formation');
     }
 
     #[Route('/formation/{id}', name: 'show_formation')]
-    public function show_formation(): Response
-    {
-        return $this->render('formation/index.html.twig', [
-            'controller_name' => 'FormationController',
+    public function show(Formation $formation) : Response
+    {   
+
+        return $this->render('formation/show.html.twig', [
+            'formation' => $formation
         ]);
     }
 }

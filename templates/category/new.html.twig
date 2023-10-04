@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
-{% block title %} Créer une catégorie {% endblock %} 
+{% block title %} Créer une catégorie {% endblock %}
 {% block body %}
-<div class="mainNewFormation">
-  <div class="holderMainNewFormation">
-    <div class="titleHolderNewFormation">
+<div class="container">
+  <div class="row">
+    <div class="col-12 d-flex flex-column align-items-center">
       <h1>Créer une catégorie</h1>
-    </div>
-    <div class="form">
+      <div class="form">
         {{form(formCreate)}}
+      </div>
     </div>
   </div>
-</div>
-{% endblock %}
+  {% endblock %}

@@ -1,36 +1,33 @@
 {% extends 'base.html.twig' %} {% block title %}Liste des formations{% endblock
 %} {% block body %}
-<div class="mainList">
-  <section>
-    <h1>Liste des formations</h1>
-    <div class="tbl-header">
-      <table cellpadding="0" cellspacing="0" border="0">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Nom du programme</th>
-            <th>Nombres de sessions</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-    <div class="tbl-content">
-      <table cellpadding="0" cellspacing="0" border="0">
-        <tbody>
-          {% for formation in formations %}
-          <tr>
-            <td>{{formation.id}}</td>
-            <td>{{formation.nomFormation}} </td>
-            {% if formation.posseder %}
-            <td>{{formation.posseder|length}} sessions prévus</td>
-            {% else %}
-            <td>Aucune session prévu</td>
-            {% endif %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
+<div class="container-fluid">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nom de la formation</th>
+        <th scope="col">Nombres de sessions</th>
+        {% if app.user %}
+        <th scope="col">Modifier</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for formation in formations %}
+      <tr class="table-active">
+        <td scope="row">{{formation.id}}</td>
+        <td><a href="{{path('show_formation', {id: formation.id}) }}">{{formation.nomFormation}}</a></td>
+        {% if formation.posseder %}
+        <td>{{formation.posseder|length}} sessions prévus</td>
+        {% else %}
+        <td>Aucune session prévu</td>
+        {% endif %}
+        {% if app.user %}
+        <td><button type="button" class="btn btn-warning" data-bcup-haslogintext="no"><a href="#">Modifier</a></button></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}

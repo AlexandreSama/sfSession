@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %} {% block title %}Formation{% endblock
+%} {% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 d-flex flex-column">
+            <h3>{{formation.nomFormation}}</h3>
+            <p>Sessions :</p>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Nom de la session</th>
+                        <th scope="col">Date de début</th>
+                        <th scope="col">Date de fin</th>
+                        <th scope="col">Nombre de place</th>
+                        <th scope="col">Place restante</th>
+                        <th scope="col">Nombre de programme</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-active">
+                    {% if formation.posseder %}
+                    {% for session in formation.posseder %}
+                    <td scope="row">{{session.id}}</td>
+                    <td><a href="{{path('show_session', {id: session.id}) }}">{{session.nom}}</a></td>
+                    <td>{{session.dateDebutFr}}</td>
+                    <td>{{session.dateFinFr}}</td>
+                    <td>{{session.nbPlace}}</td>
+                    {% if session.inscrit %}
+                    <td>{{session.nbPlace - session.inscrit|length}}</td>
+                    {% else %}
+                    <td>{{session.nbPlace}}</td>
+                    {% endif %}
+                    {% if session.programmes %}
+                        <td>{{session.programmes|length}}</td>
+                    {% else %}
+                    <td>Aucun programme prévu !</td>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <td>Pas de session prévu !</td>
+                    {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

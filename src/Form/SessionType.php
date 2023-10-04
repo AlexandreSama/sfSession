@@ -1,36 +1,50 @@
 <?php
-
 namespace App\Form;
 
-use App\Entity\Formation;
 use App\Entity\Session;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Formation;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class SessionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', TextType::class, [
-                'required' => true
+            ->add('date_debut', DateType::class, [
+                'widget' => 'single_text', 'attr' =>['class' =>'form-control']
+            
             ])
-            ->add('dateDebut', DateType::class, [
-                'required' => true
+            
+            ->add('date_fin', DateType::class, [
+                'widget' => 'single_text', 'attr' =>['class' =>'form-control']
             ])
-            ->add('dateFin', DateType::class, [
-                'required' => true
+
+            ->add('nbMax', IntegerType::class)
+            
+            ->add('programmes', CollectionType::class, [
+                'entry_type' => ProgrammeType::class,       
+                'prototype' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false
             ])
-            ->add('nbPlace', IntegerType::class, [
-                'required' => true
+            
+            ->add('formation', EntityType::class, [
+                'class' => Formation::class, 
+                'attr' => ['class' => 'form-control'],
+                'choice_label' => 'intitule'])
+            
+
+            ->add('valider', SubmitType::class, [
+                'attr' =>['class' => 'btn btn-dark']
             ])
-            ->add('valider', SubmitType::class)
         ;
     }
 

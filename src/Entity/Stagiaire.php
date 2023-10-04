@@ -91,6 +91,11 @@ class Stagiaire
         return $this->dateNaissance;
     }
 
+    public function getDateNaissanceFr(): ? String
+    {
+        return $this->dateNaissance;
+    }
+
     public function setDateNaissance(\DateTimeInterface $dateNaissance): static
     {
         $this->dateNaissance = $dateNaissance;
