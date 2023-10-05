@@ -51,8 +51,8 @@ class SessionController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/session/new', name: 'new_session')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/session/{idformation}/new', name: 'new_session')]
+    public function new($idformation, FormationRepository $formationRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $session = new Session();
 
@@ -62,6 +62,9 @@ class SessionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $session = $form->getData();
+            
+            $formation = $formationRepository->findOneBy(['id' => $idformation]);
+            $session->setFormation($formation);
 
             $entityManager->persist($session);
             $entityManager->flush();

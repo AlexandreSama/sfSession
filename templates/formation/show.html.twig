@@ -4,6 +4,7 @@ body %}
   <div class="row">
     <div class="col-12 d-flex flex-column">
       <h3>{{ formation.nomFormation }}</h3>
+      <button class="btn btn-success"><a href="{{path('new_session', {idformation: formation.id})}}">Créer une formation</a></button>
       <p>Sessions :</p>
       <table class="table table-hover">
         <thead>

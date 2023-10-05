@@ -38,12 +38,6 @@ class SessionType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false
             ])
-            
-            ->add('formation', EntityType::class, [
-                'class' => Formation::class, 
-                'attr' => ['class' => 'form-control'],
-                'choice_label' => 'nomFormation'])
-            
 
             ->add('valider', SubmitType::class, [
                 'attr' =>['class' => 'btn btn-dark']

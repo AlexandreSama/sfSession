@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %} {% block title %}Stagiaire{% endblock %} {% block
+    body %}
+    <div class="container">
+      <div class="row">
+        <div class="col-12 d-flex flex-column">
+          <p>Nom : {{stagiaire.nom}}</p>
+          <p>Prénom : {{stagiaire.prenom}}</p>
+          <p>Genre : {{stagiaire.genre}}</p>
+          <p>Date de naissance : {{stagiaire.dateNaissanceFr}}</p>
+          <p>Ville : {{stagiaire.ville}}</p>
+          <p>Email : {{stagiaire.email}}</p>
+          <p>éléphone : {{stagiaire.telephone}}</p>
+          {% if app.user %}
+          <button class="btn btn-warning"><a href="{{path('edit_stagiaire', {id: stagiaire.id})}}">Modifier</a></button>
+          <button class="btn btn-danger"><a href="{{path('delete_stagiaire', {id: stagiaire.id})}}">Supprimer</a></button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+    
