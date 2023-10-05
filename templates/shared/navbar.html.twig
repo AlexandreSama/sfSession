@@ -21,6 +21,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{{path('app_cour')}}" data-bcup-haslogintext="no">Cours</a>
         </li>
+        {% if app.user %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{path('app_stagiaire')}}" data-bcup-haslogintext="no">Stagiaires</a>
+        </li>
+        {% endif %}
       </ul>
       {% if app.user %}
       <div class="dropdown-center navDropdown">

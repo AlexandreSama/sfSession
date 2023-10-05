@@ -58,14 +58,14 @@ body %}
           <tr>
             <th scope="col">id</th>
             <th scope="col">Durée du programme</th>
-            <th scope="col">Nombre de cours</th>
+            <th scope="col">Nom du cour</th>
           </tr>
         </thead>
         <tbody>
           {% for programme in session.programmes %}
           <tr class="table-active">
             <td scope="row">{{ programme.id }}</td>
-            <td>{{ programme.nbJours }}</td>
+            <td>{{ programme.nbJours }} jours</td>
             {% if programme.cour %}
             <td>{{ programme.cour.nomCour }}</td>
             {% else %}
