@@ -23,7 +23,7 @@
         <td>Aucune session prévu</td>
         {% endif %}
         {% if app.user %}
-        <td><button type="button" class="btn btn-warning" data-bcup-haslogintext="no"><a href="#">Modifier</a></button></td>
+        <td><button type="button" class="btn btn-warning" data-bcup-haslogintext="no"><a href="{{path('edit_formation', {id: formation.id})}}">Modifier</a></button></td>
         {% endif %}
       </tr>
       {% endfor %}

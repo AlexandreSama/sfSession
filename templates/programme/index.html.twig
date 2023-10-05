@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %} {% block title %}Liste des programmes{% endblock %}
+{% block body %}
+<div class="container-fluid">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th>Durée en jours</th>
+        <th>Cour</th>
+        <th>Session</th>
+        {% if app.user %}
+        <th>Modifier</th>
+        <th>Supprimer</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for programme in programmes %}
+      <tr class="table-active">
+        <td scope="row"><a href="{{path('show_programme', {id: programme.id})}}">{{programme.id}}</a></td>
+        <td>{{programme.nbJours}}</td>
+        {% if programme.cour %}
+        <td>{{programme.cour|length}}</td>
+        {% else %}
+        <td>Aucun cour pour le moment</td>
+        {% endif %}
+        {% if programme.session %}
+        <td>{{programme.session.nom}}</td>
+        {% else %}
+        <td>Aucune session prévu pour le moment</td>
+        {% endif %}
+        {% if app.user %}
+        <td><button type="button" class="btn btn-warning" data-bcup-haslogintext="no"><a href="{{path('edit_programme', {id: programme.id})}}">Modifier</a></button></td>
+        <td><button type="button" class="btn btn-danger" data-bcup-haslogintext="no"><a href="{{path('delete_programme', {id: programme.id})}}">Supprimer</a></button></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

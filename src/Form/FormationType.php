@@ -17,6 +17,9 @@ class FormationType extends AbstractType
             ->add('nomFormation', TextType::class, [
                 'required' => true
             ])
+            ->add('valider', SubmitType::class, [
+                'attr' =>['class' => 'btn btn-dark']
+            ])
         ;
     }
 

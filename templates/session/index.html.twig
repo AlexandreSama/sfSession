@@ -30,14 +30,15 @@
         {% else %}
         <td>{{session.nbPlace}}</td>
         {% endif %}
-        <td>{{session.formation.nomFormation}}</td>
+        <td><a href="{{path('show_formation', {id: session.formation.id})}}">{{session.formation.nomFormation}}</a></td>
         {% if session.programmes %}
         <td>{{session.programmes|length}}</td>
         {% else %}
         <td>Aucun programme pour le moment</td>
         {% endif %}
         {% if app.user %}
-        <td><button type="button" class="btn btn-warning" data-bcup-haslogintext="no"><a href="#">Modifier</a></button></td>
+        <td><button type="button" class="btn btn-warning" data-bcup-haslogintext="no"><a href="{{path('edit_session', {id: session.id})}}">Modifier</a></button></td>
+        <td><button type="button" class="btn btn-danger" data-bcup-haslogintext="no"><a href="{{path('delete_session', {id: session.id})}}">Supprimer</a></button></td>
         {% endif %}
       </tr>
       {% endfor %}

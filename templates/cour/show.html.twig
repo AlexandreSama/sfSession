@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %} {% block title %}Cour{% endblock %} {% block body
+%}
+<div class="container">
+  <div class="row">
+    <div class="col-12 d-flex flex-column">
+      <h3>{{ cour.nomCour }}</h3>
+      <p>Catégorie :</p>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Nom de la catégorie</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for categorie in cour.categorie %}
+          <tr class="table-active">
+            <td scope="row">{{ categorie.id }}</td>
+            <td>
+              <a href="{{ path('show_categorie', { id: categorie.id }) }}">{{
+                categorie.nomCategorie
+                }}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p>Programme(s) :</p>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Nombre de jours</th>
+            <th scope="col">Session</th>
+          </tr>
+        </thead>
+        <tr>
+          {% if cour.programmes %}
+            {% for programme in cour.programmes %}
+            <tr>
+              <td>{{programme.id}}</td>
+              <td>{{programme.nbJours}}</td>
+              {% if programme.session %}
+              {% for session in programme.session %}
+              <td><a href="{{path('show_session', {id: session.id})}}">{{session.nom}}</a></td>
+              {% endfor %}
+              {% else %}
+              <td>Pas de session</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

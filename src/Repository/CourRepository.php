@@ -21,6 +21,18 @@ class CourRepository extends ServiceEntityRepository
         parent::__construct($registry, Cour::class);
     }
 
+    public function findProgramByCourId($courid){
+        $em = $this->getEntityManager(); // get the EntityManager
+        $sub = $em->createQueryBuilder();
+
+        $sub->select('po')
+        ->from('App\Entity\Programme', 'po')
+        ->where('po.cour = :id')
+        ->setParameter('id', $courid);
+
+        return $sub->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Cour[] Returns an array of Cour objects
 //     */

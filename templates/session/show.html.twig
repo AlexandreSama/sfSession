@@ -1,76 +1,131 @@
-{% extends 'base.html.twig' %} {% block title %}Session{% endblock
-%} {% block body %}
+{% extends 'base.html.twig' %} {% block title %}Session{% endblock %} {% block
+body %}
 <div class="container h-100">
-    <div class="row h-100 pt-5">
-        <div class="col-12 d-flex flex-column ">
-            <h1>{{session.nom}}</h1>
-            <h3>Inscrit :</h3>
-            {% if session.inscrit and session.inscrit|length >= 1 %}
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">id</th>
-                        <th scope="col">Nom du stagiaire</th>
-                        <th scope="col">Prénom du stagiaire</th>
-                        <th scope="col">Sexe</th>
-                        <th scope="col">Date de naissance</th>
-                        <th scope="col">Ville</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Téléphone</th>
-                        <th scope="col">Supprimer</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for inscrit in session.inscrit %}
-                    <tr class="table-active">
-                        <td scope="row">{{inscrit.id}}</td>
-                        <td>{{inscrit.nom}}</td>
-                        <td>{{inscrit.prenom}}</td>
-                        <td>{{inscrit.genre}}</td>
-                        <td>{{inscrit.dateNaissanceFr}}</td>
-                        <td>{{inscrit.ville}}</td>
-                        <td>{{inscrit.email}}</td>
-                        <td>{{inscrit.telephone}}</td>
-                        <td><button class="btn btn-warning">Supprimer</button></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+  <div class="row h-100 pt-5">
+    <div class="col-12 d-flex flex-column">
+      <h1>{{ session.nom }}</h1>
+      <h3>Inscrit :</h3>
+      {% if session.inscrit and session.inscrit|length >= 1 %}
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Nom du stagiaire</th>
+            <th scope="col">Prénom du stagiaire</th>
+            <th scope="col">Sexe</th>
+            <th scope="col">Date de naissance</th>
+            <th scope="col">Ville</th>
+            <th scope="col">Email</th>
+            <th scope="col">Téléphone</th>
+            <th scope="col">Supprimer</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for inscrit in session.inscrit %}
+          <tr class="table-active">
+            <td scope="row">{{ inscrit.id }}</td>
+            <td>{{ inscrit.nom }}</td>
+            <td>{{ inscrit.prenom }}</td>
+            <td>{{ inscrit.genre }}</td>
+            <td>{{ inscrit.dateNaissanceFr }}</td>
+            <td>{{ inscrit.ville }}</td>
+            <td>{{ inscrit.email }}</td>
+            <td>{{ inscrit.telephone }}</td>
+            <td>
+              <button class="btn btn-warning">
+                <a
+                  href="{{
+                    path('remove_session', {
+                      id: session.id,
+                      idstagiaire: inscrit.id
+                    })
+                  }}"
+                  >Supprimer</a
+                >
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Aucun stagiaire inscrit dans cet formation</p>
+      {% endif %}
+      <h3>Programme :</h3>
+    {% if session.programmes and session.programmes|length >= 1 %}
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Durée du programme</th>
+            <th scope="col">Nombre de cours</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for programme in session.programmes %}
+          <tr class="table-active">
+            <td scope="row">{{ programme.id }}</td>
+            <td>{{ programme.nbJours }}</td>
+            {% if programme.cour %}
+            <td>{{ programme.cour.nomCour }}</td>
             {% else %}
-            <p>Aucun stagiaire inscrit dans cet formation</p>
+            <td>Pas de cours prévu pour le moment</td>
             {% endif %}
-            <h3>Programme</h3>
-            {% if session.programmes and session.programmes|length >= 1 %}
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">id</th>
-                        <th scope="col">Durée du programme</th>
-                        <th scope="col">Nombre de cours</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for programme in session.programmes %}
-                    <tr class="table-active">
-                        <td scope="row">{{programme.id}}</td>
-                        <td>{{programme.nbJours}}</td>
-                        {% if programme.cour %}
-                        <td>{{programme.cour.nom}}</td>
-                        {% else %}
-                        <td>Pas de cours prévu pour le moment</td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <p>Aucun programme pour le moment !</p>
-            {% endif %}
-        </div>
-        <div class="col-12 d-flex flex-column">
-            <h3>Stagiaires disponible</h3>
-            
-        </div>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+    <p>Aucun programme pour le moment !</p>
+    {% endif %}
     </div>
+    <div class="col-12 d-flex flex-column">
+      <h3>Stagiaires disponible</h3>
+      {% if stagiaires %}
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Nom du stagiaire</th>
+            <th scope="col">Prénom du stagiaire</th>
+            <th scope="col">Sexe</th>
+            <th scope="col">Date de naissance</th>
+            <th scope="col">Ville</th>
+            <th scope="col">Email</th>
+            <th scope="col">Téléphone</th>
+            <th scope="col">Ajouter</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for stagiaire in stagiaires %}
+          <tr>
+            <td scope="row">{{ stagiaire.id }}</td>
+            <td>{{ stagiaire.nom }}</td>
+            <td>{{ stagiaire.prenom }}</td>
+            <td>{{ stagiaire.genre }}</td>
+            <td>{{ stagiaire.dateNaissanceFr }}</td>
+            <td>{{ stagiaire.ville }}</td>
+            <td>{{ stagiaire.email }}</td>
+            <td>{{ stagiaire.telephone }}</td>
+            <td>
+              <button class="btn btn-warning">
+                <a
+                  href="{{
+                    path('add_session', {
+                      id: session.id,
+                      idstagiaire: stagiaire.id
+                    })
+                  }}"
+                  >Ajouter</a
+                >
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}

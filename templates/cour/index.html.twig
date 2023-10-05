@@ -1,20 +1,41 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello CourController!{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/laragon/www/sfSession/src/Controller/CourController.php'|file_link(0) }}">src/Controller/CourController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/laragon/www/sfSession/templates/cour/index.html.twig'|file_link(0) }}">templates/cour/index.html.twig</a></code></li>
-    </ul>
-</div>
-{% endblock %}
+{% extends 'base.html.twig' %} {% block title %}Liste des cours{% endblock
+    %} {% block body %}
+    <div class="container-fluid">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nom du cour</th>
+            <th scope="col">Rattaché a la catégorie</th>
+            <th scope="col">Programmé</th>
+            {% if app.user %}
+                <th scope="col">Modifier</th>
+                <th scope="col">Supprimer</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for cour in cours %}
+          <tr class="table-active">
+            <td scope="row">{{cour.id}}</td>
+            <td><a href="{{path('show_cour', {id: cour.id}) }}">{{cour.nomCour}}</a></td>
+            {% if cour.categorie %}
+            <td>{{cour.categorie.nomCategorie}}</td>
+            {% else %}
+            <td>Aucune catégorie</td>
+            {% endif %}
+            {% if cour.programmes %}
+            <td>{{cour.programmes|length}}</td>
+            {% else %}
+            <td>Aucun programme pour le moment</td>
+            {% endif %}
+            {% if app.user %}
+            <td><button type="button" class="btn btn-warning" data-bcup-haslogintext="no"><a href="{{path('edit_cour', {id: cour.id})}}">Modifier</a></button></td>
+            <td><button type="button" class="btn btn-danger" data-bcup-haslogintext="no"><a href="{{path('delete_cour', {id: cour.id})}}">Supprimer</a></button></td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endblock %}

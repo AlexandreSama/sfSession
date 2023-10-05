@@ -1,7 +1,19 @@
-{% extends 'base.html.twig' %}
-{% block title %} Créer une formation {% endblock %}
-{% block body %}
-<div class="mainNew">
-  
+{% extends 'base.html.twig' %} {% block title %} {% if edit %} Modifier une
+formation {% else %} Créer une formation {% endif %} {% endblock %} {% block
+body %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 d-flex flex-column align-items-center">
+      {% if edit %}
+      <h1>Modifier une formation</h1>
+      {% else %}
+      <h1>Créer une formation</h1>
+      {% endif %}
+      <div class="form">
+        {{ form(formCreate) }}
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock %}
+
+  {% endblock %}

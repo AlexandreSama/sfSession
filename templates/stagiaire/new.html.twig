@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %} Créer un stagiaire {% endblock %}
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 d-flex flex-column align-items-center">
+      <h1>Créer un stagiaire</h1>
+      <div class="form">
+        {{form(formCreate)}}
+      </div>
+    </div>
+  </div>
+  {% endblock %}

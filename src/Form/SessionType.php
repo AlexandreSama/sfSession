@@ -11,22 +11,25 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class SessionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date_debut', DateType::class, [
+
+            ->add('nom', TextType::class)
+            ->add('dateDebut', DateType::class, [
                 'widget' => 'single_text', 'attr' =>['class' =>'form-control']
             
             ])
             
-            ->add('date_fin', DateType::class, [
+            ->add('dateFin', DateType::class, [
                 'widget' => 'single_text', 'attr' =>['class' =>'form-control']
             ])
 
-            ->add('nbMax', IntegerType::class)
+            ->add('nbPlace', IntegerType::class)
             
             ->add('programmes', CollectionType::class, [
                 'entry_type' => ProgrammeType::class,       
@@ -39,7 +42,7 @@ class SessionType extends AbstractType
             ->add('formation', EntityType::class, [
                 'class' => Formation::class, 
                 'attr' => ['class' => 'form-control'],
-                'choice_label' => 'intitule'])
+                'choice_label' => 'nomFormation'])
             
 
             ->add('valider', SubmitType::class, [

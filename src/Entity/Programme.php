@@ -17,11 +17,11 @@ class Programme
     private ?int $nbJours = null;
 
     #[ORM\ManyToOne(inversedBy: 'programmes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Cour $cour = null;
 
     #[ORM\ManyToOne(inversedBy: 'programmes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Session $session = null;
 
     public function getId(): ?int

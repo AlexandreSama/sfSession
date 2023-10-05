@@ -16,7 +16,7 @@ class FormationController extends AbstractController
     #[Route('/formation', name: 'app_formation')]
     public function index(FormationRepository $formationRepository): Response
     {
-        $formations = $formationRepository->findBy([], ['name' => 'ASC']);
+        $formations = $formationRepository->findBy([], ['nomFormation' => 'ASC']);
 
         return $this->render('formation/index.html.twig', [
             'formations' => $formations,
@@ -68,8 +68,9 @@ class FormationController extends AbstractController
             return $this->redirectToRoute('app_formation');
         }
 
-        return $this->render('formation/edit.html.twig', [
-            'formEditformation' => $form
+        return $this->render('formation/new.html.twig', [
+            'formCreate' => $form,
+            'edit' => true
         ]);
     }
 
