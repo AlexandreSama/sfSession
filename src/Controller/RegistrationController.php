@@ -35,35 +35,46 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
+
+            //If the honeyPot is empty, we can continue
+            if (empty($request->get('registration_form')['honeypot'])) {
+                // encode the plain password
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+
+                //Uniquement si un user inscrit, sinon a mettre soi-même
+                // $user->setRoles(['ROLE_FORMATEUR']);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                // generate a signed url and email it to the user
+                $this->emailVerifier->sendEmailConfirmation(
+                    'app_verify_email',
                     $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+                    (new TemplatedEmail())
+                        ->from(new Address('admin.contact@kashir.fr', 'Admin Contact Kashir'))
+                        ->to($user->getEmail())
+                        ->subject('Veuillez confirmer votre email')
+                        ->htmlTemplate('registration/confirmation_email.html.twig')
+                );
+                // do anything else you need here, like send an email
 
-            //Uniquement si un user inscrit, sinon a mettre soi-même
-            // $user->setRoles(['ROLE_FORMATEUR']);
+                return $userAuthenticator->authenticateUser(
+                    $user,
+                    $authenticator,
+                    $request
+                );
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('admin.contact@kashir.fr', 'Admin Contact Kashir'))
-                    ->to($user->getEmail())
-                    ->subject('Veuillez confirmer votre email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-            // do anything else you need here, like send an email
-
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
+                //If not, get back to the form with a lovely message
+            } else {
+                $this->addFlash('error', 'Bah alors le bot ?');
+                return $this->redirectToRoute('app_register');
+            }
         }
 
         return $this->render('registration/register.html.twig', [
@@ -80,7 +91,7 @@ class RegistrationController extends AbstractController
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+            $this->addFlash('error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
             return $this->redirectToRoute('app_home');
         }

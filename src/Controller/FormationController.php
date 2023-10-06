@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Formation;
 use App\Form\FormationType;
 use App\Repository\FormationRepository;
+use App\Repository\StagiaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,6 +85,7 @@ class FormationController extends AbstractController
 
         return $this->redirectToRoute('app_formation');
     }
+
 
     #[Route('/formation/{id}', name: 'show_formation')]
     public function show(Formation $formation) : Response

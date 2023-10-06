@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-12 d-flex flex-column align-items-center">
-      {% for flash_error in app.flashes('verify_email_error') %}
+      {% for flash_error in app.flashes('error') %}
       <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
       {% endfor %}
 

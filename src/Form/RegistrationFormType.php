@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Formateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,6 +21,12 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        //Attestation Formation
+        //Faire HoneyPot
+            ->add('honeypot', HiddenType::class, [
+                'required' => false,
+                'mapped' => false
+            ])
             ->add('email')
             ->add('nom', TextType::class, [
                 'label' => 'Votre nom',
@@ -42,7 +49,7 @@ class RegistrationFormType extends AbstractType
                 'type' => PasswordType::class,
                 'constraints' => [
                     new NotBlank(),
-                    new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/')
+                    new Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/')
                 ],
                 'invalid_message' => 'Les mots de passes doivent correspondre.',
                 'options' => ['attr' => ['class' => 'password-field']],

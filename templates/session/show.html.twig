@@ -18,6 +18,9 @@ body %}
             <th scope="col">Email</th>
             <th scope="col">Téléphone</th>
             <th scope="col">Supprimer</th>
+            {% if finish %}
+            <td>Télécharger attestation</td>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -33,17 +36,17 @@ body %}
             <td>{{ inscrit.telephone }}</td>
             <td>
               <button class="btn btn-warning">
-                <a
-                  href="{{
+                <a href="{{
                     path('remove_session', {
                       id: session.id,
                       idstagiaire: inscrit.id
                     })
-                  }}"
-                  >Supprimer</a
-                >
+                  }}">Supprimer</a>
               </button>
             </td>
+            {% if finish %}
+            <td><a href="{{path('attestation_formation', {id: session.id, stagiaireid: inscrit.id})}}">Télécharger attestation</a></td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
@@ -52,7 +55,7 @@ body %}
       <p>Aucun stagiaire inscrit dans cet formation</p>
       {% endif %}
       <h3>Programme :</h3>
-    {% if session.programmes and session.programmes|length >= 1 %}
+      {% if session.programmes and session.programmes|length >= 1 %}
       <table class="table table-hover">
         <thead>
           <tr>
@@ -75,10 +78,11 @@ body %}
           {% endfor %}
         </tbody>
       </table>
-    {% else %}
-    <p>Aucun programme pour le moment !</p>
-    {% endif %}
+      {% else %}
+      <p>Aucun programme pour le moment !</p>
+      {% endif %}
     </div>
+    {% if app.user %}
     <div class="col-12 d-flex flex-column">
       <h3>Stagiaires disponible</h3>
       {% if stagiaires %}
@@ -109,15 +113,12 @@ body %}
             <td>{{ stagiaire.telephone }}</td>
             <td>
               <button class="btn btn-warning">
-                <a
-                  href="{{
+                <a href="{{
                     path('add_session', {
                       id: session.id,
                       idstagiaire: stagiaire.id
                     })
-                  }}"
-                  >Ajouter</a
-                >
+                  }}">Ajouter</a>
               </button>
             </td>
           </tr>
@@ -126,6 +127,7 @@ body %}
       </table>
       {% endif %}
     </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

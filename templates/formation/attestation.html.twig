@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Attestation de Formation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .info {
+            margin-top: 20px;
+        }
+        .info p {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Attestation de Formation</h1>
+        <p>Ceci est pour certifier que :</p>
+        <div class="info">
+            <p>Nom : <span id="nom">{{stagiaire.nom}}</span></p>
+            <p>Prénom : <span id="prenom">{{stagiaire.prenom}}</span></p>
+            <p>Date de naissance : <span id="dob">{{stagiaire.dateNaissanceFr}}</span></p>
+        </div>
+        <p>a suivi avec succès la formation suivante :</p>
+        <div class="info">
+            <p>Nom de la formation : <span id="nomFormation">{{session.formation.nomFormation}}</span></p>
+            <p>Date de début : <span id="dateDebut">{{session.dateDebutFr}}</span></p>
+            <p>Date de fin : <span id="dateFin">{{session.dateFinFr}}</span></p>
+        </div>
+        <p>Cette formation a été dispensée par :</p>
+        <div class="info">
+            <p>Nom de l'organisme de formation : <span id="nomOrganisme">Kashir</span></p>
+            <p>Adresse : <span id="adresseOrganisme">9 Rue des fleurs, 87045 Paname</span></p>
+            <p>Téléphone : <span id="telOrganisme">06.35.45.87.14</span></p>
+        </div>
+        <p>Cette attestation est délivrée le <span id="dateDelivrance">{{'now'|date('d/m/y')}}</span>.</p>
+        <p>Signature de l'organisme :</p>
+        <div class="info">
+            Kashir Corp.
+        </div>
+    </div>
+</body>
+</html>

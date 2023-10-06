@@ -10,6 +10,7 @@ use App\Repository\FormationRepository;
 use App\Repository\SessionRepository;
 use App\Repository\StagiaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -120,6 +121,8 @@ class SessionController extends AbstractController
         ]);
     }
 
+
+
     /**
      * This PHP function deletes a session and removes its associations with related entities.
      * 
@@ -217,6 +220,37 @@ class SessionController extends AbstractController
     }
 
     /**
+     * This PHP function generates and streams a PDF attestation of completion for a training session
+     * and a specific trainee.
+     * 
+     * @param Session session The "session" parameter is an instance of the "Session" entity class. It
+     * represents a specific session of a training program.
+     * @param stagiaireid The `stagiaireid` parameter is the ID of the stagiaire (trainee) for whom the
+     * attestation (certificate) is being generated.
+     * @param StagiaireRepository stagiaireRepository The `` parameter is an
+     * instance of the `StagiaireRepository` class, which is responsible for retrieving and
+     * manipulating data related to the `Stagiaire` entity from the database. It is used in the
+     * `attestation_fin_formation` method to fetch a
+     * 
+     * @return Response a Response object with an empty body, a status code of 200, and a Content-Type
+     * header of 'application/pdf'.
+     */
+    #[Route('/session/{id}/attestation/{stagiaireid}', name:'attestation_formation')]
+    public function attestation_fin_formation(Session $session, $stagiaireid, StagiaireRepository $stagiaireRepository): Response
+    {
+        $stagiaire = $stagiaireRepository->findOneBy(['id' => $stagiaireid]);
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($this->renderView('formation/attestation.html.twig',
+        ['stagiaire' => $stagiaire, 'session' => $session]));
+        $dompdf->render();
+        $dompdf->stream('attestation_' . $stagiaire->getNom() . '.pdf', array('Attachment' => 0));
+
+        return new Response('', 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
+
+    /**
      * This PHP function retrieves a session and displays it along with a list of stagiaires (trainees)
      * who are not already in the session.
      * 
@@ -235,9 +269,20 @@ class SessionController extends AbstractController
         // dd($session);
         //Seconde ou l'on récupère uniquement ceux qui ne sont pas dans la session spécifique
         $stagiairesNotInSession = $sessionRepository->findByStagiairesNotInSession($session->getId());
+        $date = new \DateTime();
+
+        $interval = $date->diff($session->getDateFin());
+
+        if($interval->invert){
+            $finish = true;
+        }else{
+            $finish = false;
+        }
+
         return $this->render('session/show.html.twig', [
             'session' => $session,
-            'stagiaires' => $stagiairesNotInSession
+            'stagiaires' => $stagiairesNotInSession,
+            'finish' => $finish
         ]);
     }
 }
